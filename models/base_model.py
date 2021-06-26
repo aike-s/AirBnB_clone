@@ -8,6 +8,8 @@ import uuid
 """ Para crear la fecha """
 from datetime import datetime
 
+from models import storage
+
 class BaseModel():
     """ Creating the Base class """
 
@@ -24,6 +26,8 @@ class BaseModel():
                     continue
                 else:
                     setattr(self, key, value)
+        else:
+            storage.new(self)
 
     def __str__(self):
 
@@ -35,6 +39,7 @@ class BaseModel():
         """ Updates the public instance attribute """
         current_time_updated = datetime.now()
         self.updated_at = current_time_updated
+        storage.save()
 
     def to_dict(self):
 
