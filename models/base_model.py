@@ -19,10 +19,10 @@ class BaseModel():
         current_time = datetime.now()
         if kwargs != {}:
             for key, value in kwargs.items():
-                if key is '__class__':
+                if key == '__class__':
                     continue
                 else:
-                    if key is 'created_at' or key is 'updated_at':
+                    if key == 'created_at' or key == 'updated_at':
                         value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                     setattr(self, key, value)
         else:
