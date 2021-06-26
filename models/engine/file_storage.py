@@ -21,23 +21,34 @@ class FileStorage():
     def new(self, obj):
         """ Sets in __objects the obj """
 
-        """ Obtain the dictionary of the object // no es necesario """
-        """ darle el nombre de la clase porque obj ya tiene sus metodos"""
-        obj_dict = obj.to_dict()
+        """ aqui no se crea el diccionario de obj porque si este sufre cambios"""
+        """ no podran ser serializados correctamente"""
 
         """ And the name of the key for the dictionary __objects """
-        key = ("{}.{}".format(self.__class__.__name__, obj_dict.get('id')))
+        key = ("{}.{}".format(obj.__class__.__name__, obj.id))
 
         """ Update the dictionary __objects with the new object """
-        FileStorage.__objects.update({key : obj_dict})
+        FileStorage.__objects[key] = obj
 
     def save(self):
         """ Serializes __objects to the JSON file """
 
-        with open(FileStorage.__file_path, mode="a", encoding='UTF-8') as open_file:
-            """ Here the dictionary __objects is serializated and is saved """
+        obj_dict = {}
+        """ In All() there are all the objects from which the dictionary """
+        """of each one will be obtained """
+        for key, obj in self.all().items():
+            """ Each object dictionary is saved for later serialization """
+            """ IMPORTANTE """
+            """ Se hace en este punto porque la informacion esta como debe ser guardada finalmente """
+            if type(obj) is dict:
+                obj_dict[key] = obj
+            else:
+                obj_dict[key] = obj.to_dict()
+
+        with open(FileStorage.__file_path, mode="w", encoding='UTF-8') as open_file:
+            """ Here the dictionary obj_dict is serializated and is saved """
             """ in the __file_path file """
-            json.dump(FileStorage.__objects, open_file)
+            json.dump(obj_dict, open_file)
 
     def reload(self):
         """ Deserializes the JSON file to __objects """
@@ -49,5 +60,4 @@ class FileStorage():
                 """ Deserialization of file content """
                 """ to be stored in __objects as dictionary """
                 FileStorage.__objects = json.load(open_file)
-
             BaseModel(FileStorage.__objects)
