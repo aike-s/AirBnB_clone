@@ -31,8 +31,6 @@ class FileStorage():
         """ Serializes __objects to the JSON file """
 
         obj_dict = {}
-        """ In All() there are all the objects from which the dictionary """
-        """of each one will be obtained """
         for key, obj in self.all().items():
             """ Each object dictionary is saved for later serialization """
             if type(obj) is dict:
@@ -42,7 +40,6 @@ class FileStorage():
 
         with open(FileStorage.__file_path, mode="w") as open_file:
             """ Here the dictionary obj_dict is serializated and is saved """
-            """ in the __file_path file """
             json.dump(obj_dict, open_file)
 
     def reload(self):
@@ -59,10 +56,10 @@ class FileStorage():
                     self.new(BaseModel(**value))
 
     def find_key(self, key):
-        """  """
+        """ Find if a key exists in the __object dictionaty """
 
-        if FileStorage.__objects.has_key(key):
-            obj = FileStorage.__objects[key]
+        if key in self.all():
+            obj = self.all().get(key)
             obj = obj.to_dict()
             return BaseModel(**obj)
         else:

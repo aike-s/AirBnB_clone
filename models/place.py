@@ -1,11 +1,12 @@
 #!/usr/bin/python3
 """
+In this module the class Place which inherits from the class BaseModel
 """
 
 from models.base_model import BaseModel
 
 class Place(BaseModel):
-    """  """
+    """ Initialization of the class attributes """
 
     city_id = "" #will be the City.id
     user_id = "" # will be the User.id

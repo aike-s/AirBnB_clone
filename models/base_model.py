@@ -3,11 +3,8 @@
 In this module, the base class BaseModel
 """
 
-""" Para asignar el valor del atributo id """
 import uuid
-""" Para crear la fecha """
 from datetime import datetime
-
 from models import storage
 
 class BaseModel():
@@ -46,7 +43,6 @@ class BaseModel():
     def to_dict(self):
         """ Returns a dictionary of the instance """
 
-        """ creamos una copia del diccionario para que este no se sobreescriba """
         objects_dict = self.__dict__.copy()
         objects_dict.update({'__class__' : self.__class__.__name__,
                             'created_at' : self.created_at.isoformat(),
