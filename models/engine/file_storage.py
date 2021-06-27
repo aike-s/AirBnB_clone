@@ -57,7 +57,6 @@ class FileStorage():
         """ Verify if the file exists """
         if os.path.isfile(FileStorage.__file_path):
             with open(FileStorage.__file_path, mode="r", encoding='UTF-8') as open_file:
-                """ Deserialization of file content """
-                """ to be stored in __objects as dictionary """
-                FileStorage.__objects = json.load(open_file)
-            BaseModel(FileStorage.__objects)
+                dict_objs = json.load(open_file)
+                for key, value in dict_objs.items():
+                    self.new(BaseModel(**value))
