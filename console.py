@@ -9,6 +9,8 @@ from models import storage
 class HBNBCommand(cmd.Cmd):
 
     prompt = '(hbnb)'
+    class_list = ["User", "BaseModel", "Place", "State", "City",
+                "Amenity", "Review"]
 
     def do_EOF(self, line):
         """Quit command to exit the program \n"""
@@ -29,7 +31,7 @@ class HBNBCommand(cmd.Cmd):
 
         if line is None:
             print("** class name missing **")
-        elif line != "BaseModel":
+        elif line not in HBNBCommand.class_list:
             print("** class doesn't exist **")
         else:
             new_obj = BaseModel()
@@ -42,15 +44,43 @@ class HBNBCommand(cmd.Cmd):
         """ pensar en que pasa si envian mas parametros de lo debido"""
 
         arguments = line.split(' ', 1)
-        if line is None:
+        if len(line) == 0:
             print("** class name missing **")
-        elif arguments[0] != "BaseModel":
+        elif arguments[0] not in HBNBCommand.class_list:
             print("** class doesn't exist **")
         elif len(arguments) < 2:
             print("** instance id missing **")
         else:
-            name_key = arguments[0] + "." + arguments[1]
-            all_objs = storage.all()
+            key_name = arguments[0] + "." + arguments[1]
+            obj = storage.find_key(key_name)
+            print(obj)
+
+    def do_destroy(self, line):
+        """  """
+
+        arguments = line.split(' ', 1)
+        if len(line) == 0:
+            print("** class name missing **")
+        elif arguments[0] not in HBNBCommand.class_list:
+            print("** class doesn't exist **")
+        elif len(arguments) < 2:
+            print("** instance id missing **")
+        else:
+            key_name = arguments[0] + "." + arguments[1]
+            """no se si esto se pueda xd, de no ser asi hay que importar FileStorage"""
+            obj = storage.find_key(key_name)
+            if obj is not None:
+                storage.FileStorage.__objects.del(key_name)
+                storage.save()
+
+    def do_all(self, line):
+        """  """
+
+        all_objs = storage.all()
+        for obj_id in all_objs.keys():
+            obj = all_objs[obj_id]
+            print(obj)
+
 
 
     def emptyline(self):

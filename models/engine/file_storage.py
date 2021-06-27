@@ -5,7 +5,7 @@ and deserializes JSON file to instances
 """
 
 import json
-import os.path
+from models.base_model import BaseModel
 
 class FileStorage():
     """ Initialization of class attributes """
@@ -21,11 +21,8 @@ class FileStorage():
     def new(self, obj):
         """ Sets in __objects the obj """
 
-        """ aqui no se crea el diccionario de obj porque si este sufre cambios"""
-        """ no podran ser serializados correctamente"""
-
-        """ And the name of the key for the dictionary __objects """
-        key = ("{}.{}".format(obj.__class__.__name__, obj.id))
+        """ Find the name of the key for the dictionary __objects """
+        key = obj.__class__.__name__ + "." + obj.id
 
         """ Update the dictionary __objects with the new object """
         FileStorage.__objects[key] = obj
@@ -38,14 +35,12 @@ class FileStorage():
         """of each one will be obtained """
         for key, obj in self.all().items():
             """ Each object dictionary is saved for later serialization """
-            """ IMPORTANTE """
-            """ Se hace en este punto porque la informacion esta como debe ser guardada finalmente """
             if type(obj) is dict:
                 obj_dict[key] = obj
             else:
                 obj_dict[key] = obj.to_dict()
 
-        with open(FileStorage.__file_path, mode="w", encoding='UTF-8') as open_file:
+        with open(FileStorage.__file_path, mode="w") as open_file:
             """ Here the dictionary obj_dict is serializated and is saved """
             """ in the __file_path file """
             json.dump(obj_dict, open_file)
@@ -55,8 +50,20 @@ class FileStorage():
         from models.base_model import BaseModel
 
         """ Verify if the file exists """
-        if os.path.isfile(FileStorage.__file_path):
-            with open(FileStorage.__file_path, mode="r", encoding='UTF-8') as open_file:
+        if not FileStorage.__file_path:
+            return
+        else:
+            with open(FileStorage.__file_path, mode="r") as open_file:
                 dict_objs = json.load(open_file)
                 for key, value in dict_objs.items():
                     self.new(BaseModel(**value))
+
+    def find_key(self, key):
+        """  """
+
+        if FileStorage.__objects.has_key(key):
+            obj = FileStorage.__objects[key]
+            obj = obj.to_dict()
+            return BaseModel(**obj)
+        else:
+            return None
