@@ -3,7 +3,6 @@
 This module contains the entry point of the command interpreter
 """
 import cmd
-from typing import Text
 from models.base_model import BaseModel
 from models import storage
 
@@ -19,12 +18,12 @@ class HBNBCommand(cmd.Cmd):
         """ or returns True in case of non error """
         """ esto es una prueba :) """
 
-        class_list = ["User", "BaseModel", "Place", "State", "City",
-                "Amenity", "Review"]
+
+
         if line[0] is None:
             print("** class name missing **")
             return False
-        elif line[0] not in class_list:
+        elif line[0] not in self.class_list:
             print("** class doesn't exist **")
             return False
         elif line[1] == True:
@@ -54,9 +53,11 @@ class HBNBCommand(cmd.Cmd):
         """ aqui estoy probando la funcion print_error, se supone """
         """ que se imprime el error desde la funcion y en caso de no haber error """
         """ (o sea que retorne True), se crea la instancia """
-
-        argument = self.print_error(line)
-        if argument is True:
+        if len(line) == 0:
+            print("** class name missing **")
+        elif line != "BaseModel":
+            print("** class doesn't exist **")
+        else:
             new_obj = BaseModel()
             new_obj.save()
             print(new_obj.id)
@@ -93,13 +94,13 @@ class HBNBCommand(cmd.Cmd):
             key_name = arguments[0] + "." + arguments[1]
             obj = storage.find_key(key_name)
             if obj is not None:
-                storage.all().del(key_name)
+                storage.all().pop(key_name)
                 storage.save()
 
     def do_all(self, line):
         """ Prints all string representation of all instances """
-
-        if len(line) == 0:
+        arguments = line.split(' ', 1)
+        if len(line) == 0 or arguments[0] == 'BaseModel':
             all_objs = storage.all()
             for obj_id in all_objs.keys():
                 obj = all_objs[obj_id]

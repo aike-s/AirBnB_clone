@@ -5,7 +5,7 @@ and deserializes JSON file to instances
 """
 
 import json
-from models.base_model import BaseModel
+import os.path
 
 class FileStorage():
     """ Initialization of class attributes """
@@ -45,19 +45,19 @@ class FileStorage():
     def reload(self):
         """ Deserializes the JSON file to __objects """
         from models.base_model import BaseModel
-
         """ Verify if the file exists """
-        if not FileStorage.__file_path:
-            return
-        else:
-            with open(FileStorage.__file_path, mode="r") as open_file:
-                dict_objs = json.load(open_file)
-                for key, value in dict_objs.items():
-                    self.new(BaseModel(**value))
+        try:
+            if os.path.isfile(FileStorage.__file_path):
+                with open(FileStorage.__file_path, mode="r", encoding='UTF-8') as open_file:
+                    dict_objs = json.load(open_file)
+                    for key, value in dict_objs.items():
+                        self.new(BaseModel(**value))
+        except:
+            pass
 
     def find_key(self, key):
+        from models.base_model import BaseModel
         """ Find if a key exists in the __object dictionaty """
-
         if key in self.all():
             obj = self.all().get(key)
             obj = obj.to_dict()
