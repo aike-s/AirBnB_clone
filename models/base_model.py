@@ -9,6 +9,8 @@ from models import storage
 
 class BaseModel():
     """ Creating the Base class """
+    
+    name_class = ''
 
     def __init__(self, *args, **kwargs):
         """ Initialization of the instance """
@@ -30,8 +32,10 @@ class BaseModel():
 
     def __str__(self):
         """ Prints a representation of an instance """
-
-        return ("[{:s}] ({:s}) {}".format(self.__class__.__name__, self.id, self.__dict__))
+        if self.name_class == '':
+            return ("[{:s}] ({:s}) {}".format(self.__class__.__name__, self.id, self.__dict__))
+        else:
+            return ("[{:s}] ({:s}) {}".format(self.name_class, self.id, self.__dict__))
 
     def save(self):
         """ Updates the public instance attribute """
@@ -44,7 +48,12 @@ class BaseModel():
         """ Returns a dictionary of the instance """
 
         objects_dict = self.__dict__.copy()
-        objects_dict.update({'__class__' : self.__class__.__name__,
+        if self.name_class == '':
+            objects_dict.update({'__class__' : self.__class__.__name__,
                             'created_at' : self.created_at.isoformat(),
                             'updated_at' : self.updated_at.isoformat()})
+        else:
+            objects_dict.update({'__class__' : self.name_class,
+                                'created_at' : self.created_at.isoformat(),
+                                'updated_at' : self.updated_at.isoformat()})
         return objects_dict

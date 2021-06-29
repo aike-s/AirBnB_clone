@@ -20,9 +20,12 @@ class FileStorage():
 
     def new(self, obj):
         """ Sets in __objects the obj """
-
         """ Find the name of the key for the dictionary __objects """
-        key = obj.__class__.__name__ + "." + obj.id
+        from models.base_model import BaseModel
+        if BaseModel.name_class == '':
+            key = obj.__class__.__name__+ "." + obj.id
+        else:
+             key = BaseModel.name_class + "." + obj.id
 
         """ Update the dictionary __objects with the new object """
         FileStorage.__objects[key] = obj

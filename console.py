@@ -6,6 +6,7 @@ import cmd
 from models.base_model import BaseModel
 from models import storage
 
+
 class HBNBCommand(cmd.Cmd):
 
     prompt = '(hbnb)'
@@ -17,16 +18,13 @@ class HBNBCommand(cmd.Cmd):
         """ Returns False and prints error in case of error """
         """ or returns True in case of non error """
         """ esto es una prueba :) """
-
-
-
         if line[0] is None:
             print("** class name missing **")
             return False
         elif line[0] not in self.class_list:
             print("** class doesn't exist **")
             return False
-        elif line[1] == True:
+        elif line[1] is True:
             arguments = line[0].split(' ', 1)
             if len(arguments) < 2:
                 print("** instance id missing **")
@@ -55,13 +53,13 @@ class HBNBCommand(cmd.Cmd):
         """ (o sea que retorne True), se crea la instancia """
         if len(line) == 0:
             print("** class name missing **")
-        elif line != "BaseModel":
+        elif line not in HBNBCommand.class_list:
             print("** class doesn't exist **")
         else:
+            BaseModel.name_class = line
             new_obj = BaseModel()
             new_obj.save()
             print(new_obj.id)
-
 
     def do_show(self, line):
         """ Prints the string representation of an instance """
@@ -78,7 +76,11 @@ class HBNBCommand(cmd.Cmd):
         else:
             key_name = arguments[0] + "." + arguments[1]
             obj = storage.find_key(key_name)
-            print(obj)
+            if storage.find_key(key_name) is not None:
+                print(obj)
+            else:
+                print("** no instance found **")
+
 
     def do_destroy(self, line):
         """ Deletes an instance """
@@ -99,22 +101,36 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, line):
         """ Prints all string representation of all instances """
-        arguments = line.split(' ', 1)
-        if len(line) == 0 or arguments[0] == 'BaseModel':
+        if len(line) == 0 or line in HBNBCommand.class_list:
             all_objs = storage.all()
             for obj_id in all_objs.keys():
                 obj = all_objs[obj_id]
-                print(obj)
+                print("[\"{}\"]".format(obj))
+
         elif line in HBNBCommand.class_list:
             """ retornar e imprimir solo las instancias de esta clase en especifico """
-
         else:
             print("** class doesn't exist **")
+
+    def do_update(self, line):
+        arguments = line.split(' ', 1)
+        if len(line) == 0:
+            print(" ** class name missing ** ")
+        elif arguments[0] not in HBNBCommand.class_list:
+            print("** class doesn't exist ** ")
+        elif len(arguments) < 2:
+            print("** instance id missing **")
+        else:
+            key_name = arguments[0] + "." + arguments[1]
+            obj = storage.find_key(key_name)
+            if storage.find_key(key_name) is None:
+                print("** no instance found **")
+            else:
+                print("hola")
 
     def emptyline(self):
         """an empty line + ENTER shouldn’t execute anything"""
         return
-
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
