@@ -28,6 +28,11 @@ class BaseModel():
             self.updated_at = current_time
             storage.new(self)
 
+    def update_instance(self, attribute, value):
+        """ Add a new attribute or update instance from input """
+
+        setattr(self, attribute, value)
+
     def __str__(self):
         """ Prints a representation of an instance """
 

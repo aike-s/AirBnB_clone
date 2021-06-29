@@ -9,27 +9,35 @@ from models import storage
 class HBNBCommand(cmd.Cmd):
 
     prompt = '(hbnb)'
-    class_list = ["User", "BaseModel", "Place", "State", "City",
-                "Amenity", "Review"]
 
-    def print_error(self, *line):
+    def print_error(self, *to_verify):
         """ Verify errors in line parameter """
         """ Returns False and prints error in case of error """
         """ or returns True in case of non error """
-        """ esto es una prueba :) """
 
+        class_list = ["User", "BaseModel", "Place", "State", "City",
+                    "Amenity", "Review"]
+        arguments = to_verify[0].split(' ', 1)
 
-
-        if line[0] is None:
+        if len(to_verify[0]) == 0:
             print("** class name missing **")
             return False
-        elif line[0] not in self.class_list:
+        elif arguments[0] not in class_list:
             print("** class doesn't exist **")
             return False
-        elif line[1] == True:
-            arguments = line[0].split(' ', 1)
+        elif len(to_verify) > 1:
             if len(arguments) < 2:
                 print("** instance id missing **")
+                return False
+        elif len(to_verify) == 3:
+            print("---- miau")
+            arguments = to_verify[0].split(' ', 4)
+            print(arguments)
+            if len(arguments) < 3:
+                print("** attribute name missing **")
+                return False
+            elif len(arguments) < 4:
+                print("** value missing **")
                 return False
         else:
             return True
@@ -50,47 +58,49 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, line):
         """ Create and save a new instance """
-        """ aqui estoy probando la funcion print_error, se supone """
-        """ que se imprime el error desde la funcion y en caso de no haber error """
-        """ (o sea que retorne True), se crea la instancia """
-        if len(line) == 0:
-            print("** class name missing **")
-        elif line != "BaseModel":
-            print("** class doesn't exist **")
-        else:
-            new_obj = BaseModel()
+        from models.user import User
+        from models.city import City
+        from models.place import Place
+        from models.amenity import Amenity
+        from models.state import State
+        from models.review import Review
+
+        class_dict = {"User" : User(), "BaseModel" : BaseModel(),
+                        "Place" : Place(), "State" : State(),
+                        "City" : City(), "Amenity" : Amenity(),
+                        "Review" : Review()}
+
+        arguments = line.split(' ', 1)
+
+        verify_error = self.print_error(line)
+        if verify_error == True:
+            class_name = arguments[0]
+            for class_name, action in class_dict.items():
+                if class_name == arguments[0]:
+                    print(class_name)
+                    print(type(class_name))
+                    print(class_dict[class_name])
+                    new_obj = action
             new_obj.save()
             print(new_obj.id)
 
-
     def do_show(self, line):
         """ Prints the string representation of an instance """
-        """IMPORTANTE"""
-        """ pensar en que pasa si envian mas parametros de lo debido"""
 
-        arguments = line.split(' ', 1)
-        if len(line) == 0:
-            print("** class name missing **")
-        elif arguments[0] not in HBNBCommand.class_list:
-            print("** class doesn't exist **")
-        elif len(arguments) < 2:
-            print("** instance id missing **")
-        else:
+        verify_error = self.print_error(line, "verify id")
+        if verify_error != False:
+            arguments = line.split(' ', 1)
             key_name = arguments[0] + "." + arguments[1]
             obj = storage.find_key(key_name)
-            print(obj)
+            if obj != None:
+                print(obj)
 
     def do_destroy(self, line):
         """ Deletes an instance """
 
-        arguments = line.split(' ', 1)
-        if len(line) == 0:
-            print("** class name missing **")
-        elif arguments[0] not in HBNBCommand.class_list:
-            print("** class doesn't exist **")
-        elif len(arguments) < 2:
-            print("** instance id missing **")
-        else:
+        verify_error = self.print_error(line, "verify id")
+        if verify_error != False:
+            arguments = line.split(' ', 1)
             key_name = arguments[0] + "." + arguments[1]
             obj = storage.find_key(key_name)
             if obj is not None:
@@ -99,17 +109,41 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, line):
         """ Prints all string representation of all instances """
+        class_list = ["User", "BaseModel", "Place", "State", "City",
+                    "Amenity", "Review"]
         arguments = line.split(' ', 1)
-        if len(line) == 0 or arguments[0] == 'BaseModel':
-            all_objs = storage.all()
-            for obj_id in all_objs.keys():
-                obj = all_objs[obj_id]
-                print(obj)
-        elif line in HBNBCommand.class_list:
-            """ retornar e imprimir solo las instancias de esta clase en especifico """
 
-        else:
-            print("** class doesn't exist **")
+        all_objs = storage.all()
+        for obj_key in all_objs.keys():
+            if len(line) == 0:
+                obj = all_objs[obj_key]
+                print(obj)
+            elif arguments[0] in class_list:
+                answer = obj_key.find(arguments[0], 0, len(arguments[0]))
+                if answer != -1:
+                    obj = all_objs[obj_key]
+                    print(obj)
+            else:
+                print("** class doesn't exist **")
+
+    def do_update(self, line):
+        """ Updates an instance by adding or updating attribute """
+
+        verify_error = self.print_error(line, "verify id", "verify attributes")
+        if verify_error != False:
+            arguments = line.split(' ', 4)
+            key_name = arguments[0] + "." + arguments[1]
+            obj = storage.find_key(key_name)
+            if obj is None:
+                return
+            if len(arguments) < 3:
+                print("** attribute name missing **")
+                return
+            elif len(arguments) < 4:
+                print("** value missing **")
+                return
+            obj.update_instance(arguments[2], arguments[3])
+            storage.update_file(obj, key_name)
 
     def emptyline(self):
         """an empty line + ENTER shouldn’t execute anything"""

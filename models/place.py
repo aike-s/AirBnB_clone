@@ -8,6 +8,9 @@ from models.base_model import BaseModel
 class Place(BaseModel):
     """ Initialization of the class attributes """
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
     city_id = "" #will be the City.id
     user_id = "" # will be the User.id
     name = ""
