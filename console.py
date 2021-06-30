@@ -83,8 +83,9 @@ class HBNBCommand(cmd.Cmd):
         if verify_error is not False:
             arguments = line.split(' ', 1)
             key_name = arguments[0] + "." + arguments[1]
-            new_obj = storage.all()[key_name]
-            print(new_obj)
+            obj = storage.find_key(key_name)
+            if obj != None:
+                print(obj)
 
     def do_destroy(self, line):
         """ Deletes an instance """
@@ -92,7 +93,7 @@ class HBNBCommand(cmd.Cmd):
         if verify_error is not False:
             arguments = line.split(' ', 1)
             key_name = arguments[0] + "." + arguments[1]
-            obj = storage.all()[key_name]
+            obj = storage.find_key(key_name)
             if obj is not None:
                 storage.all().pop(key_name)
                 storage.save()
@@ -101,17 +102,18 @@ class HBNBCommand(cmd.Cmd):
         """ Prints all string representation of all instances """
         arguments = line.split(' ', 1)
         all_objs = storage.all()
-        for obj_key in all_objs.keys():
-            if len(line) == 0:
+        if len(line) == 0:
+            for obj_key in all_objs.keys():
                 obj = all_objs[obj_key]
                 print(obj)
-            elif arguments[0] in class_list:
+        elif arguments[0] in class_list:
+            for obj_key in all_objs.keys():
                 answer = obj_key.find(arguments[0], 0, len(arguments[0]))
                 if answer != -1:
                     obj = all_objs[obj_key]
                     print(obj)
-            else:
-                print("** class doesn't exist **")
+        else:
+            print("** class doesn't exist **")
 
     def do_update(self, line):
         """ Updates an instance by adding or updating attribute """
@@ -119,7 +121,7 @@ class HBNBCommand(cmd.Cmd):
         if verify_error is not False:
             arguments = line.split(' ', 4)
             key_name = arguments[0] + "." + arguments[1]
-            obj = storage.all()[key_name]
+            obj = storage.find_key(key_name)
             if obj is None:
                 return
             if len(arguments) < 3:

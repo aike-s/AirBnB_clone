@@ -2,6 +2,11 @@
 """ tests """
 
 import unittest
+from models.base_model import BaseModel
 
-class TestBaseModel_save(unittest.TestCase):
-    """ Unittest for testing save method od the BaseModel class """
+class TestBaseModel(unittest.TestCase):
+    """ Unittest for BaseModel class """
+
+
+if __name__ == '__main__':
+    unittest.main()

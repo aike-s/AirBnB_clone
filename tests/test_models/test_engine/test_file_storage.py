@@ -2,12 +2,10 @@
 """ tests """
 
 import unittest
-from models import storage
-from models.amenity import Amenity
+from models.engine.file_storage import FileStorage
 
-class TestAmenity(unittest.TestCase):
+class TestFileStorage(unittest.TestCase):
     """ Unittest for testing Amenity class """
-
 
 if __name__ == '__main__':
     unittest.main()

@@ -21,8 +21,7 @@ class BaseModel():
                     continue
                 else:
                     if key == 'created_at' or key == 'updated_at':
-                        value = datetime.strptime(value, "%Y-%m-%d\
-                                                         T%H:%M:%S.%f")
+                        value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                     setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())

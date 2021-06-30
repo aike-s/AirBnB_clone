@@ -60,6 +60,12 @@ class FileStorage():
         """ Deserializes the JSON file to __objects """
         """ Verify if the file exists """
         from models.base_model import BaseModel
+        from models.user import User
+        from models.city import City
+        from models.place import Place
+        from models.amenity import Amenity
+        from models.state import State
+        from models.review import Review
         class_dict = {"User": User, "BaseModel": BaseModel,
                       "Place": Place, "State": State,
                       "City": City, "Amenity": Amenity,
@@ -68,7 +74,32 @@ class FileStorage():
             if os.path.isfile(FileStorage.__file_path):
                 with open(FileStorage.__file_path, mode="r") as open_file:
                     dict_objs = json.load(open_file)
-                    for key, value in dict_objs.items():
-                        self.new(BaseModel(**value))
+                    for dict_value in dict_objs.values():
+                        class_name = dict_value.get('__class__')
+                        self.new(class_dict[class_name](**dict_value))
         except:
             pass
+
+    def find_key(self, key):
+        """ Find if a key exists in the __object dictionaty """
+        from models.base_model import BaseModel
+        from models.user import User
+        from models.city import City
+        from models.place import Place
+        from models.amenity import Amenity
+        from models.state import State
+        from models.review import Review
+
+        class_dict = {"User": User, "BaseModel": BaseModel,
+                "Place": Place, "State": State,
+                "City": City, "Amenity": Amenity,
+                "Review": Review}
+
+        if key in self.all():
+            obj = self.all().get(key)
+            obj = obj.to_dict()
+            class_name = obj.get('__class__')
+            return class_dict[class_name](**obj)
+        else:
+            print("** no instance found **")
+            return None
