@@ -1,4 +1,4 @@
-![myimage-alt-tag](https://holbertonintranet.s3.amazonaws.com/uploads/medias/2018/6/65f4a1dd9c51265f49d0.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARDDGGGOUWMNL5ANN%2F20210629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20210629T202646Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=0d60c5dfc5cb4d3b82c8f63da7a52f0896447bc69c87bdfc9419c74e180b9187)
+<p align="center"><img src="https://camo.githubusercontent.com/7e9956678cbe5ec1d712dde039115910e2002db17bc7ff7e7d1638915c500827/68747470733a2f2f692e6962622e636f2f324e42596259762f434c4f4e312e706e67" width="676" height="285"/></p>
 
 # AirBnB clone - The console
 
