@@ -8,8 +8,10 @@ from models.user import User
 class TestUser(unittest.TestCase):
     """ Unittest for User class """
 
-    obj = User()
-    
+    test_obj = User()
+    test_obj.email = "jesusita64@yahoo.com"
+    test_obj.first_name = "Jesusita"
+    test_obj.last_name = "del Rosario"
 
     def test_init():
         """  """
