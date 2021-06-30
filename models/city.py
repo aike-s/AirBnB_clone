@@ -5,11 +5,12 @@ In this module the class City which inherits from the class BaseModel
 
 from models.base_model import BaseModel
 
+
 class City(BaseModel):
     """ Initialization of the class attributes """
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-    state_id = "" # will be the State.id
+    """will be the State.id"""
+    state_id = ""
     name = ""

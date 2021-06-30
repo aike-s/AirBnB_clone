@@ -5,6 +5,16 @@ This module contains the entry point of the command interpreter
 import cmd
 from models.base_model import BaseModel
 from models import storage
+from models.user import User
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
+from models.state import State
+from models.review import Review
+
+class_list = ["User", "BaseModel", "Place", "State", "City",
+              "Amenity", "Review"]
+
 
 class HBNBCommand(cmd.Cmd):
 
@@ -14,9 +24,6 @@ class HBNBCommand(cmd.Cmd):
         """ Verify errors in line parameter """
         """ Returns False and prints error in case of error """
         """ or returns True in case of non error """
-
-        class_list = ["User", "BaseModel", "Place", "State", "City",
-                    "Amenity", "Review"]
         arguments = to_verify[0].split(' ', 1)
 
         if len(to_verify[0]) == 0:
@@ -58,61 +65,41 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, line):
         """ Create and save a new instance """
-        from models.user import User
-        from models.city import City
-        from models.place import Place
-        from models.amenity import Amenity
-        from models.state import State
-        from models.review import Review
-
-        class_dict = {"User" : User(), "BaseModel" : BaseModel(),
-                        "Place" : Place(), "State" : State(),
-                        "City" : City(), "Amenity" : Amenity(),
-                        "Review" : Review()}
-
+        class_dict = {"User": User, "BaseModel": BaseModel,
+                      "Place": Place, "State": State,
+                      "City": City, "Amenity": Amenity,
+                      "Review": Review}
         arguments = line.split(' ', 1)
-
         verify_error = self.print_error(line)
-        if verify_error == True:
+        if verify_error is True:
             class_name = arguments[0]
-            for class_name, action in class_dict.items():
-                if class_name == arguments[0]:
-                    print(class_name)
-                    print(type(class_name))
-                    print(class_dict[class_name])
-                    new_obj = action
+            new_obj = class_dict[class_name]()
             new_obj.save()
             print(new_obj.id)
 
     def do_show(self, line):
         """ Prints the string representation of an instance """
-
         verify_error = self.print_error(line, "verify id")
-        if verify_error != False:
+        if verify_error is not False:
             arguments = line.split(' ', 1)
             key_name = arguments[0] + "." + arguments[1]
-            obj = storage.find_key(key_name)
-            if obj != None:
-                print(obj)
+            new_obj = storage.all()[key_name]
+            print(new_obj)
 
     def do_destroy(self, line):
         """ Deletes an instance """
-
         verify_error = self.print_error(line, "verify id")
-        if verify_error != False:
+        if verify_error is not False:
             arguments = line.split(' ', 1)
             key_name = arguments[0] + "." + arguments[1]
-            obj = storage.find_key(key_name)
+            obj = storage.all()[key_name]
             if obj is not None:
                 storage.all().pop(key_name)
                 storage.save()
 
     def do_all(self, line):
         """ Prints all string representation of all instances """
-        class_list = ["User", "BaseModel", "Place", "State", "City",
-                    "Amenity", "Review"]
         arguments = line.split(' ', 1)
-
         all_objs = storage.all()
         for obj_key in all_objs.keys():
             if len(line) == 0:
@@ -128,12 +115,11 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update(self, line):
         """ Updates an instance by adding or updating attribute """
-
         verify_error = self.print_error(line, "verify id", "verify attributes")
-        if verify_error != False:
+        if verify_error is not False:
             arguments = line.split(' ', 4)
             key_name = arguments[0] + "." + arguments[1]
-            obj = storage.find_key(key_name)
+            obj = storage.all()[key_name]
             if obj is None:
                 return
             if len(arguments) < 3:
@@ -148,7 +134,6 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """an empty line + ENTER shouldn’t execute anything"""
         return
-
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

@@ -7,6 +7,14 @@ and deserializes JSON file to instances
 import json
 import os.path
 
+from models.user import User
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
+from models.state import State
+from models.review import Review
+
+
 class FileStorage():
     """ Initialization of class attributes """
 
@@ -50,40 +58,17 @@ class FileStorage():
 
     def reload(self):
         """ Deserializes the JSON file to __objects """
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.city import City
-        from models.place import Place
-        from models.amenity import Amenity
-        from models.state import State
-        from models.review import Review
-
         """ Verify if the file exists """
+        from models.base_model import BaseModel
+        class_dict = {"User": User, "BaseModel": BaseModel,
+                      "Place": Place, "State": State,
+                      "City": City, "Amenity": Amenity,
+                      "Review": Review}
         try:
             if os.path.isfile(FileStorage.__file_path):
                 with open(FileStorage.__file_path, mode="r") as open_file:
                     dict_objs = json.load(open_file)
                     for key, value in dict_objs.items():
-                        self.new(User(**value))
+                        self.new(BaseModel(**value))
         except:
             pass
-
-    def find_key(self, key):
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.city import City
-        from models.place import Place
-        from models.amenity import Amenity
-        from models.state import State
-        from models.review import Review
-        """ Find if a key exists in the __object dictionaty """
-        """ Returns an instance in case of existence or None otherwise """
-
-        if key in self.all():
-            obj = self.all().get(key)
-            obj = obj.to_dict()
-            class_name = obj.get['__class__']
-            return class_name(**obj)
-        else:
-            print("** no instance found **")
-            return None
