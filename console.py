@@ -130,6 +130,7 @@ class HBNBCommand(cmd.Cmd):
             elif len(arguments) < 4:
                 print("** value missing **")
                 return
+            obj.save()
             obj.update_instance(arguments[2], arguments[3])
             storage.update_file(obj, key_name)
 
