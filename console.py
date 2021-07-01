@@ -88,16 +88,17 @@ class HBNBCommand(cmd.Cmd):
         """ Prints all string representation of all instances """
         arguments = line.split(' ', 1)
         all_objs = storage.all()
+        inst_list = []
         if len(line) == 0:
-            for obj_key in all_objs.keys():
-                obj = all_objs[obj_key]
-                print(obj)
+            for key, value in all_objs.items():
+                inst_list.append(str(value))
+            print(inst_list)
         elif arguments[0] in class_list:
-            for obj_key in all_objs.keys():
-                answer = obj_key.find(arguments[0], 0, len(arguments[0]))
+            for key, value in all_objs.items():
+                answer = key.find(arguments[0], 0, len(arguments[0]))
                 if answer != -1:
-                    obj = all_objs[obj_key]
-                    print(obj)
+                    inst_list.append(str(value))
+            print(inst_list)
         else:
             print("** class doesn't exist **")
 
