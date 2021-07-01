@@ -3,6 +3,7 @@
 This module contains the entry point of the command interpreter
 """
 import cmd
+import sys
 from models.base_model import BaseModel
 from models import storage
 from models.user import User
@@ -36,32 +37,18 @@ class HBNBCommand(cmd.Cmd):
             if len(arguments) < 2:
                 print("** instance id missing **")
                 return False
-        elif len(to_verify) == 3:
-            print("---- miau")
-            arguments = to_verify[0].split(' ', 4)
-            print(arguments)
-            if len(arguments) < 3:
-                print("** attribute name missing **")
-                return False
-            elif len(arguments) < 4:
-                print("** value missing **")
-                return False
         else:
             return True
 
     def do_EOF(self, line):
         """Quit command to exit the program \n"""
-        try:
-            return True
-        except:
-            print()
+        print()
+        sys.exit(0)
+
 
     def do_quit(self, line):
         """Quit command to exit the program \n"""
-        try:
-            return True
-        except:
-            print()
+        sys.exit(0)
 
     def do_create(self, line):
         """ Create and save a new instance """
@@ -117,7 +104,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update(self, line):
         """ Updates an instance by adding or updating attribute """
-        verify_error = self.print_error(line, "verify id", "verify attributes")
+        verify_error = self.print_error(line, "verify id")
         if verify_error is not False:
             arguments = line.split(' ', 4)
             key_name = arguments[0] + "." + arguments[1]
