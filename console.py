@@ -45,7 +45,6 @@ class HBNBCommand(cmd.Cmd):
         print()
         sys.exit(0)
 
-
     def do_quit(self, line):
         """Quit command to exit the program \n"""
         sys.exit(0)
@@ -71,7 +70,7 @@ class HBNBCommand(cmd.Cmd):
             arguments = line.split(' ', 1)
             key_name = arguments[0] + "." + arguments[1]
             obj = storage.find_key(key_name)
-            if obj != None:
+            if obj is not None:
                 print(obj)
 
     def do_destroy(self, line):

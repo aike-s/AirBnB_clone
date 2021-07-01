@@ -4,6 +4,7 @@
 import unittest
 from console import HBNBCommand
 
+
 class Test_Console(unittest.TestCase):
     """ Unittest for console """
 

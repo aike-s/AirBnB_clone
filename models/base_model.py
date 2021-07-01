@@ -21,7 +21,8 @@ class BaseModel():
                     continue
                 else:
                     if key == 'created_at' or key == 'updated_at':
-                        value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                        str_Var = "%Y-%m-%dT%H:%M:%S.%f"
+                        value = datetime.strptime(value, str_Var)
                     setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
@@ -36,9 +37,8 @@ class BaseModel():
 
     def __str__(self):
         """ Prints a representation of an instance """
-
-        return ("[{:s}] ({:s}) {}".format(self.__class__.__name__,
-                                          self.id, self.__dict__))
+        names = self.__class__.__name__
+        return ("[{:s}] ({:s}) {}".format(names, self.id, self.__dict__))
 
     def save(self):
         """ Updates the public instance attribute """

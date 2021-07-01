@@ -30,7 +30,8 @@ class FileStorage():
         """ Sets in __objects the obj """
 
         """ Find the name of the key for the dictionary __objects """
-        key = obj.__class__.__name__ + "." + obj.id
+        str_Obj = str(obj.id)
+        key = obj.__class__.__name__ + "." + str_Obj
 
         """ Update the dictionary __objects with the new object """
         FileStorage.__objects[key] = obj
@@ -91,9 +92,9 @@ class FileStorage():
         from models.review import Review
 
         class_dict = {"User": User, "BaseModel": BaseModel,
-                "Place": Place, "State": State,
-                "City": City, "Amenity": Amenity,
-                "Review": Review}
+                      "Place": Place, "State": State,
+                      "City": City, "Amenity": Amenity,
+                      "Review": Review}
 
         if key in self.all():
             obj = self.all().get(key)
