@@ -6,7 +6,7 @@ In this directory you will find the files containing each class used in the cons
 | File  | Class  | 
 | :------------ |:---------------:| 
 | amenity.py     | Amenity |
-| base_model.py| centered        |
+| base_model.py| BaseModel |
 | city.py | City|
 | place.py | Place|
 | review.py | Review |
