@@ -2,17 +2,31 @@
 """ tests """
 
 import unittest
-from models import storage
+import pep8
 from models.review import Review
 
-class TestReview(unittest.TestCase):
-    """ Unittest for Review class """
 
-    test_obj = Review()
-    test_obj.text = "Nice place with nice people"
+class Test_ReviewModel(unittest.TestCase):
+    """ Test the review model class """
 
-    def test_init(self):
-        """  """
+    def testpep8(self):
+        """ testing codestyle """
+        pepstylecode = pep8.StyleGuide(quiet=True)
+        user_path = 'models/review.py'
+        result = pepstylecode.check_files([user_path])
+
+    def setUp(self):
+        self.model = Review()
+        self.model.save()
+
+    def test_ReviewInstantiation(self):
+        """ Test for initialization """
+        self.assertTrue(hasattr(self.model, "place_id"))
+        self.assertTrue(hasattr(self.model, "user_id"))
+        self.assertTrue(hasattr(self.model, "text"))
+        self.assertEqual(self.model.place_id, "")
+        self.assertEqual(self.model.user_id, "")
+        self.assertEqual(self.model.text, "")
 
 if __name__ == '__main__':
     unittest.main()

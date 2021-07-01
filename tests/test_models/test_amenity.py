@@ -2,17 +2,26 @@
 """ tests """
 
 import unittest
-from models import storage
+import pep8
 from models.amenity import Amenity
 
-class TestAmenity(unittest.TestCase):
-    """ Unittest for testing Amenity class """
 
-    test_obj = Amenity()
-    test_obj.name = "Breakfast"
+class Test_AmenityModel(unittest.TestCase):
+    """ Test the amenity model class """
 
-    def test_init(self):
-        """  """
+    def testpep8(self):
+        """ testing codestyle """
+        pepstylecode = pep8.StyleGuide(quiet=True)
+        user_path = 'models/amenity.py'
+        result = pepstylecode.check_files([user_path])
+
+    def setUp(self):
+        self.model = Amenity()
+        self.model.save()
+
+    def test_Amenity_initialization(self):
+        self.assertTrue(hasattr(self.model, "name"))
+        self.assertEqual(self.model.name, "")
 
 if __name__ == '__main__':
     unittest.main()
