@@ -89,18 +89,19 @@ class HBNBCommand(cmd.Cmd):
         arguments = line.split(' ', 1)
         all_objs = storage.all()
         inst_list = []
-        if len(line) == 0:
-            for key, value in all_objs.items():
-                inst_list.append(str(value))
-            print(inst_list)
-        elif arguments[0] in class_list:
-            for key, value in all_objs.items():
-                answer = key.find(arguments[0], 0, len(arguments[0]))
-                if answer != -1:
+        if len(all_objs) > 0:
+            if len(line) == 0:
+                for key, value in all_objs.items():
                     inst_list.append(str(value))
-            print(inst_list)
-        else:
-            print("** class doesn't exist **")
+                print(inst_list)
+            elif arguments[0] in class_list:
+                for key, value in all_objs.items():
+                    answer = key.find(arguments[0], 0, len(arguments[0]))
+                    if answer != -1:
+                        inst_list.append(str(value))
+                print(inst_list)
+            else:
+                print("** class doesn't exist **")
 
     def do_update(self, line):
         """ Updates an instance by adding or updating attribute """
@@ -120,6 +121,13 @@ class HBNBCommand(cmd.Cmd):
             obj.save()
             obj.update_instance(arguments[2], arguments[3])
             storage.update_file(obj, key_name)
+
+    def do_count(self, arg):
+        count = 0
+        for key in storage.all():
+            if arg in key:
+                count += 1
+        print(count)
 
     def emptyline(self):
         """an empty line + ENTER shouldn’t execute anything"""
