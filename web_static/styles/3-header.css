@@ -1,10 +1,10 @@
 header {
-    background-color: royalblue;
+    background-color: white;
     height: 70%;
     width: 100%;
-    border-bottom: 1px #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
 }
-.logo {
+img {
     vertical-align: middle;
     margin-left: 20px;
     margin-right: auto;
