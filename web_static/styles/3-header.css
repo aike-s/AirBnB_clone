@@ -1,0 +1,11 @@
+header {
+    background-color: royalblue;
+    height: 70%;
+    width: 100%;
+    border-bottom: 1px #CCCCCC;
+}
+.logo {
+    vertical-align: middle;
+    margin-left: 20px;
+    margin-right: auto;
+}
