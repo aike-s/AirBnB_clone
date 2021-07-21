@@ -1,8 +1,9 @@
 header {
     background-color: white;
-    height: 70%;
+    height: 70px;
     width: 100%;
     border-bottom: 1px solid #CCCCCC;
+    display: flex;
 }
 img {
     vertical-align: middle;
@@ -10,7 +11,11 @@ img {
     margin-right: auto;
 }
 .logo_image {
-    vertical-align: middle;
+    background-image:url(../images/logo.png);
+    background-repeat: no-repeat;
+    width: 142px;
+    height: 60px;
+    margin: auto;
     margin-left: 20px;
-    margin-right: auto;
+    align-self: center;
 }

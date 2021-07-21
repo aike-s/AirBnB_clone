@@ -16,8 +16,38 @@
     position: absolute;
     top: 0px;
     background-color:#DDD;
-    left: 25%;
+    left: 25.1%;
 }
+.popover {
+    bottom: 0;
+    transform: translatey(100%);
+    position: absolute;
+    list-style-type: none;
+    width: 17%;
+    background-color: #FAFAFA;
+    border: 1px solid #DDDDDD;
+    display: none;
+    padding: 4%;
+    padding-top: unset;
+}
+li {
+    margin: 9px;
+    margin-left: 22px;
+}
+h2 {
+    margin-top: 30px;
+}
+.amenities ul{
+    padding-top: 30px;
+}
+.locations:hover .popover {
+    display: inline-block;
+}
+
+.amenities:hover .popover {
+    display: inline-block;
+}
+
 h3 {
     align-self: center;
     font-weight: 600;

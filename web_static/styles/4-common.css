@@ -1,7 +1,3 @@
-@import url(3-header.css);
-@import url(3-footer.css);
-@import url(4-filters.css);
-
 body {
     padding: 0;
     margin: 0;
@@ -14,11 +10,10 @@ body {
     max-width: 1000px;
     margin-top: 30px;
     margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
 }
-button {
-    font-size: 18px;
-    position: relative;
-    vertical-align: middle;
-    margin-right: 30px;
-    margin-top: 11px;
+* {
+    padding: 0;
+    margin: 0;
 }
